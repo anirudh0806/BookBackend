@@ -92,7 +92,17 @@ router.post('/delete', async (req, res) => {
 router.post('/add', async (req, res) => {
   id = req.body.id;
   const cart = req.body.cart;
+  const email=req.body.email;
+  
   const item = await fetchTemplateCopy.findOne({ _id: id });
+  if(item.email == email )
+  {
+    res.status(200).json({ message: 'You are not allowed to add your own book to the cart' });
+  }
+  else
+  {
+
+  
   let flag = false;
   cart.forEach((element) => {
     console.log(id, 'asdasd', element._id);
@@ -114,6 +124,7 @@ router.post('/add', async (req, res) => {
         console.log(err);
         res.status(500).json({ error: err });
       });
+    }
   }
 });
 router.post('/addFromSearch', async (req, res) => {
